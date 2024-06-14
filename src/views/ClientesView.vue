@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <header class="header">
       <navBarAdministrador />
@@ -50,6 +49,7 @@
             <th>Apellido Paterno</th>
             <th>Apellido Materno</th>
             <th>Correo</th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -61,6 +61,9 @@
             <td>{{ usuario.apellidoPaterno }}</td>
             <td>{{ usuario.apellidoMaterno }}</td>
             <td>{{ usuario.email }}</td>
+            <td>
+              <button class="boton2" @click.stop="eliminarUsuario(usuario.id, usuario.email)">Eliminar</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -74,7 +77,8 @@
 <script>
 import { useUserStore } from "../stores/user";
 import { db } from "../Firebase/index";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
+import { getAuth, deleteUser } from "firebase/auth"; // Asegúrate de importar deleteUser
 import navBarAdministrador from "@/components/navBarAdministrador.vue";
 
 export default {
@@ -129,6 +133,24 @@ export default {
         console.error("Error al cargar los usuarios:", error);
       }
     },
+    async eliminarUsuario(uid, email) {
+      try {
+        const auth = getAuth();
+        // Eliminar el usuario de Firestore
+        await deleteDoc(doc(db, "usuarios", uid));
+
+        // Eliminar el usuario de la autenticación
+        //const user = await auth.getUserByEmail(email); // Obtén el usuario por correo electrónico
+        //await deleteUser(user);
+
+        // Volver a cargar la lista de usuarios
+        await this.cargarUsuarios();
+
+        console.log(`Usuario con UID: ${uid} y correo: ${email} eliminado exitosamente.`);
+      } catch (error) {
+        console.error("Error al eliminar el usuario:", error);
+      }
+    },
     logout() {
       const userStore = useUserStore();
       userStore.logout();
@@ -139,7 +161,6 @@ export default {
   },
 };
 </script>
-
 <style>
 /* Estilos para la tabla de usuarios */
 .tabla-usuarios {
