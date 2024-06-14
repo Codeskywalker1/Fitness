@@ -8,17 +8,30 @@
     </header>
     <div class="info">
       <section>
-        <div class="chart-container">
-          <h2 id="titulo">Gráfica de Peso</h2>
-          <canvas v-if="chartData" ref="chartCanvasPeso"></canvas>
+        <div class="chart-container"><div>
+            <h2 id="titulo">Gráfica de Peso</h2>
+          </div>
+          <div>
+            <canvas v-if="chartData" ref="chartCanvasPeso"></canvas>
+          </div>
         </div>
         <div class="chart-container">
-          <h2 id="titulo">Gráfica de Circunferencia Abdominal</h2>
-          <canvas v-if="chartData" ref="chartCanvasAbdominal"></canvas>
+          <div>
+            <h2 id="titulo">Gráfica de Circunferencia Abdominal</h2>
+          </div>
+          <div>
+            <canvas v-if="chartData" ref="chartCanvasAbdominal"></canvas>
+          </div>
+          
         </div>
         <div class="chart-container">
-          <h2 id="titulo">Gráfica de Circunferencia Cadera</h2>
-          <canvas v-if="chartData" ref="chartCanvasCadera"></canvas>
+          <div>
+            <h2 id="titulo">Gráfica de Circunferencia Cadera</h2>
+          </div>
+          <div>
+            <canvas v-if="chartData" ref="chartCanvasCadera"></canvas>
+          </div>
+          
         </div>
         <div class="data-list">
           <h3 id="titulo2">Entradas de Peso y Circunferencias</h3>
@@ -64,7 +77,9 @@
 
 <script>
 import navBarUsuario from "@/components/navBarUsuario.vue";
-import { Line } from 'vue-chartjs';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
+
 import {
   Chart as ChartJS,
   Title,
@@ -341,10 +356,6 @@ export default {
   height: 400px;
   width: 900px;
   margin-bottom: 20px;
-}
-
-.data-list {
-  margin-top: 7em;
 }
 
 table {
